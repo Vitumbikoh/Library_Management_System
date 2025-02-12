@@ -1,4 +1,4 @@
-@extends('admin.dashboard')
+@extends('admin.layout')
 
 @section('content')
     <h2 class="text-xl font-semibold mb-4">Manage Books</h2>

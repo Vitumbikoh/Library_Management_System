@@ -12,20 +12,20 @@ Route::get('/', function () {
 });
 
 // Redirect users based on their role after login
-Route::get('/dashboard', function () {
+Route::get('/layout', function () {
     if (auth()->user()->role === 'admin') {
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
     return redirect()->route('user.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Admin Dashboard Route
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard/{section?}', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/layout/{section?}', [AdminDashboardController::class, 'index'])->name('admin.layout');
 
-    Route::get('/home', function () {
-        return view('admin.home');
-    })->name('admin.home');
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
 
     Route::get('/books', function () {
         return view('admin.books');

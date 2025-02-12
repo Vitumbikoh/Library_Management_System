@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
 {
-    public function index($section = 'home')
+    public function index($section = 'dashboard')
     {
         // Check if the section exists or use 'home' by default
-        return view('admin.dashboard', ['content' => $section]);
+        return view('admin.layout', ['content' => $section]);
     }
 }
