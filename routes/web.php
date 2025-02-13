@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +13,7 @@ Route::get('/', function () {
 });
 
 // Redirect users based on their role after login
-Route::get('/dashboard', function () {
+Route::get('/', function () {
     if (auth()->user()->role === 'admin') {
         return redirect()->route('admin.dashboard');
     }
@@ -21,12 +22,43 @@ Route::get('/dashboard', function () {
 
 // Admin Dashboard Route
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/layout/{section?}', [AdminDashboardController::class, 'index'])->name('admin.layout');
+
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+
+    Route::get('/books/index', [BookController::class, 'index'])->name('admin.books.index');
+    Route::get('/books.edit', [BookController::class, 'edit'])->name('admin.books.edit');
+
+
+    Route::get('/circulation', function () {
+        return view('admin.circulation');
+    })->name('admin.circulation');
+
+    Route::get('/notify', function () {
+        return view('admin.notify');
+    })->name('admin.notify');
+
+    Route::get('/admin-panel', function () {
+        return view('admin.panel');
+    })->name('admin.panel');
+
+    Route::get('/settings', function () {
+        return view('admin.settings');
+    })->name('admin.settings');
+
+    Route::get('/reports', function () {
+        return view('admin.reports');
+    })->name('admin.reports');
+
+    // Resource Routes for Books
+    Route::resource('/admin/books', BookController::class);
 });
 
 // User Dashboard Route
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
 });
 
 // Authenticated Routes
@@ -39,4 +71,4 @@ Route::middleware('auth')->group(function () {
 });
 
 // Load authentication routes
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

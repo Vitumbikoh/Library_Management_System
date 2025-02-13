@@ -11,19 +11,31 @@ class BookController extends Controller
     /**
      * Display a listing of the books.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $books = Book::paginate(10);
+        $query = Book::query();
 
-        return view('books.index', compact('books'));
+        // Apply search filter if any
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('author', 'like', '%' . $search . '%')
+                ->orWhere('isbn', 'like', '%' . $search . '%');
+        }
+
+        // Paginate the filtered results
+        $books = $query->paginate($request->get('show', 10)); // Default to 10 entries per page
+
+        return view('admin.books.index', compact('books'));
     }
+
 
     /**
      * Show the form for creating a new book.
      */
     public function create()
     {
-        return view('books.create');
+        return view('admin.books.create'); // Update view path
     }
 
     /**
@@ -51,8 +63,9 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        return view('books.edit', compact('book'));
+        return view('admin.books.edit', compact('book'));
     }
+
 
     /**
      * Update the specified book in storage.
@@ -71,7 +84,7 @@ class BookController extends Controller
 
         $book->update($request->all());
 
-        return redirect()->route('books.index')->with('message', 'Book updated successfully');
+        return redirect()->route('admin.books.index')->with('message', 'Book updated successfully');
     }
 
     /**

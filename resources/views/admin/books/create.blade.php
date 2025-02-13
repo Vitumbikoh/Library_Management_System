@@ -1,4 +1,6 @@
-<x-app-layout>
+@extends('admin.layout')
+
+@section('content')
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Create Book') }}
@@ -34,7 +36,7 @@
                             <x-text-input id="quantity_available" name="quantity_available" type="number" required class="block mt-1 w-full" />
 
                             <x-input-label for="description" :value="__('Description')" />
-                            <x-textarea id="description" name="description" required class="block mt-1 w-full" rows="4"></x-textarea>
+                            <x-text-input id="description" name="description" required class="block mt-1 w-full" rows="4"></x-text-input>
 
                             <x-input-label for="location" :value="__('Location')" />
                             <x-text-input id="location" name="location" type="text" required class="block mt-1 w-full" />
@@ -46,4 +48,5 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+
+@endsection
