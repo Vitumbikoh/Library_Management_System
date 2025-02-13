@@ -11,18 +11,18 @@
             <div class="bg-gray-100 p-4 rounded-lg shadow">
                 <h3 class="text-lg font-semibold mb-2">Issue a Book</h3>
                 <p class="text-gray-600 mb-2">Lend a book to a member.</p>
-                <a href="" 
-                   class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <a href="{{ route('circulation.select-user') }}"
+                    class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     Issue Book
                 </a>
+
             </div>
 
             <!-- Return a Book -->
             <div class="bg-gray-100 p-4 rounded-lg shadow">
                 <h3 class="text-lg font-semibold mb-2">Return a Book</h3>
                 <p class="text-gray-600 mb-2">Process book returns from members.</p>
-                <a href="" 
-                   class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <a href="{{ route('select-user-with-loans') }}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     Return Book
                 </a>
             </div>
@@ -31,8 +31,7 @@
             <div class="bg-gray-100 p-4 rounded-lg shadow">
                 <h3 class="text-lg font-semibold mb-2">Borrowing History</h3>
                 <p class="text-gray-600 mb-2">Track borrowing and return records.</p>
-                <a href="" 
-                   class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <a href="" class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     View History
                 </a>
             </div>
@@ -54,24 +53,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Example row (Replace with dynamic data) -->
-                        <tr class="border-b">
-                            <td class="py-2 px-4">1</td>
-                            <td class="py-2 px-4">The Great Gatsby</td>
-                            <td class="py-2 px-4">John Doe</td>
-                            <td class="py-2 px-4">2025-02-01</td>
-                            <td class="py-2 px-4">2025-02-15</td>
-                            <td class="py-2 px-4 text-green-600">Borrowed</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-2 px-4">2</td>
-                            <td class="py-2 px-4">To Kill a Mockingbird</td>
-                            <td class="py-2 px-4">Jane Smith</td>
-                            <td class="py-2 px-4">2025-01-28</td>
-                            <td class="py-2 px-4">2025-02-10</td>
-                            <td class="py-2 px-4 text-red-600">Overdue</td>
-                        </tr>
-                        <!-- End example row -->
+                        @foreach ($loans as $loan)
+                            <tr class="border-b">
+                                <td class="py-2 px-4">{{ $loop->iteration }}</td>
+                                <td class="py-2 px-4">{{ $loan->book->title }}</td>
+                                <td class="py-2 px-4">{{ $loan->user->name }}</td>
+                                <td class="py-2 px-4">
+                                    {{ $loan->loan_date ? $loan->loan_date->format('Y-m-d') : 'N/A' }}
+                                </td>
+                                <td class="py-2 px-4">
+                                    {{ $loan->due_date ? $loan->due_date->format('Y-m-d') : 'N/A' }}
+                                </td>
+
+                                <td
+                                    class="py-2 px-4
+                                            @if ($loan->status == 'Borrowed') text-green-600 @elseif ($loan->status == 'Returned') text-gray-600 @else text-red-600 @endif">
+                                    {{ $loan->status }}
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

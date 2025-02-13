@@ -11,21 +11,20 @@
 
             <div>
                 <label for="member_email" class="block text-gray-700 font-medium">Member Email</label>
-                <input type="email" id="member_email" name="member_email" 
-                       class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                       placeholder="Enter member's email" required>
+                <input type="email" id="member_email" name="member_email"
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter member's email" required>
             </div>
 
             <div>
                 <label for="message" class="block text-gray-700 font-medium">Message</label>
                 <textarea id="message" name="message" rows="4"
-                          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Enter notification message" required></textarea>
+                    class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="Enter notification message" required></textarea>
             </div>
 
             <div>
-                <button type="submit" 
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     Send Notification
                 </button>
             </div>
@@ -46,26 +45,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Example row (Replace with dynamic data) -->
-                        <tr class="border-b">
-                            <td class="py-2 px-4">1</td>
-                            <td class="py-2 px-4">John Doe</td>
-                            <td class="py-2 px-4">johndoe@example.com</td>
-                            <td class="py-2 px-4">5</td>
-                            <td class="py-2 px-4">
-                                <a href="#" class="text-blue-500 hover:underline">Send Reminder</a>
-                            </td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-2 px-4">2</td>
-                            <td class="py-2 px-4">Jane Smith</td>
-                            <td class="py-2 px-4">janesmith@example.com</td>
-                            <td class="py-2 px-4">3</td>
-                            <td class="py-2 px-4">
-                                <a href="#" class="text-blue-500 hover:underline">Send Reminder</a>
-                            </td>
-                        </tr>
-                        <!-- End example row -->
+                        @if(isset($overdueLoans) && $overdueLoans->count())
+                            @foreach ($overdueLoans as $index => $loan)
+                                <tr class="border-b">
+                                    <td class="py-2 px-4">{{ $index + 1 }}</td>
+                                    <td class="py-2 px-4">{{ $loan->user->name }}</td>
+                                    <td class="py-2 px-4">{{ $loan->user->email }}</td>
+                                    <td class="py-2 px-4">{{ now()->diffInDays($loan->due_date) }} days</td>
+                                    <td class="py-2 px-4">
+                                        <a href="{{ route('send-reminder', $loan->user->id) }}"
+                                            class="text-blue-500 hover:underline">
+                                            Send Reminder
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="5" class="py-2 px-4 text-center">No overdue loans found.</td>
+                            </tr>
+                        @endif
+
                     </tbody>
                 </table>
             </div>

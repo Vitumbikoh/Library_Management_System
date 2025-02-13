@@ -4,6 +4,8 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CirculationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,11 +56,29 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
 
     // Resource Routes for Books
     Route::resource('/admin/books', BookController::class);
+
+    Route::get('/circulation/select-user', [CirculationController::class, 'selectUser'])->name('circulation.select-user');
+
+    Route::get('/issue-book', [CirculationController::class, 'showUsers'])->name('issue-book');
+    Route::get('/issue-book/{user}', [CirculationController::class, 'showBooks'])->name('view-available-books');
+    Route::post('/issue-book/{user}/{book}', [CirculationController::class, 'issueBook'])->name('issue-book.store');
+    Route::get('/circulation/{user}/books/{book}/create-loan', [CirculationController::class, 'createLoanForm'])->name('create-loan-form');
+    Route::post('/circulation/{user}/books/{book}/issue', [CirculationController::class, 'issueBook'])->name('issue-book.store');
+    Route::get('/admin/circulation', [CirculationController::class, 'index'])->name('admin.circulation');
+    Route::get('/admin/circulation', [CirculationController::class, 'index'])->name('admin.circulation');
+    Route::get('/admin/select-user-with-loans', [CirculationController::class, 'selectUserWithLoans'])->name('select-user-with-loans');
+    Route::get('/admin/user/{user}/loaned-books', [CirculationController::class, 'viewLoanedBooks'])->name('view-loaned-books');
+    Route::put('/admin/loan/{loan}/return', [CirculationController::class, 'returnBook'])->name('return-book');
+    Route::get('/admin/notify', [CirculationController::class, 'notifyOverdueMembers'])->name('notify-overdue-members');
+    Route::get('/admin/notify/{user}/reminder', [CirculationController::class, 'sendReminder'])->name('send-reminder');
+
+
+
 });
 
 // User Dashboard Route
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
 });
 
 // Authenticated Routes

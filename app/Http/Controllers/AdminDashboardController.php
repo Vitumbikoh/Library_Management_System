@@ -10,5 +10,9 @@ class AdminDashboardController extends Controller
     {
         // Check if the section exists or use 'home' by default
         return view('admin.layout', ['content' => $section]);
+        
     }
+
+
+    
 }
