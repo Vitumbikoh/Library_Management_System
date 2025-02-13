@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,7 +13,7 @@ Route::get('/', function () {
 });
 
 // Redirect users based on their role after login
-Route::get('/layout', function () {
+Route::get('/', function () {
     if (auth()->user()->role === 'admin') {
         return redirect()->route('admin.dashboard');
     }
@@ -27,9 +28,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
-    Route::get('/books', function () {
-        return view('admin.books');
-    })->name('admin.books');
+    Route::get('/books/index', [BookController::class, 'index'])->name('admin.books.index');
+    Route::get('/books.edit', [BookController::class, 'edit'])->name('admin.books.edit');
+
 
     Route::get('/circulation', function () {
         return view('admin.circulation');
@@ -50,11 +51,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/reports', function () {
         return view('admin.reports');
     })->name('admin.reports');
+
+    // Resource Routes for Books
+    Route::resource('/admin/books', BookController::class);
 });
 
 // User Dashboard Route
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
 });
 
 // Authenticated Routes

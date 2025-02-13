@@ -1,11 +1,11 @@
 <div class="min-w-full align-middle">
-    <form method="POST" wire:submit.prevent="save">
+    <form method="POST" wire:submit.prevent="update">
         @csrf
 
         <!-- Title -->
         <div>
             <x-input-label for="title" :value="__('Title')" required />
-            <x-text-input wire:model.live.debounce.1s="title" id="title" class="block mt-1 w-full" type="text" required autofocus />
+            <x-text-input wire:model="title" id="title" class="block mt-1 w-full" type="text" required />
             <x-input-error :messages="$errors->get('title')" class="mt-2" />
         </div>
 
@@ -68,7 +68,7 @@
 
         <div class="mt-4">
             <x-primary-button>
-                {{ __('Save') }}
+                {{ __('Update') }}
             </x-primary-button>
         </div>
     </form>

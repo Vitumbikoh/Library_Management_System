@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
         // Attempt to authenticate the user using 'web' guard
         if (Auth::guard('web')->attempt($credentials)) {
             $request->session()->regenerate();
-            
+
             // Redirect based on role
             $user = Auth::user();
             if ($user->role === 'admin') {
