@@ -31,16 +31,17 @@
         </form>
 
         <!-- List of Overdue Members -->
+        <!-- List of Overdue Members -->
         <div class="mt-6">
-            <h3 class="text-lg font-semibold mb-2">Overdue Members</h3>
             <div class="overflow-x-auto">
                 <table class="min-w-full bg-white border border-gray-300">
                     <thead class="bg-gray-800 text-white">
                         <tr>
                             <th class="py-2 px-4 border-b">#</th>
                             <th class="py-2 px-4 border-b">Member Name</th>
-                            <th class="py-2 px-4 border-b">Email</th>
+                            <th class="py-2 px-4 border-b">Book Name</th>
                             <th class="py-2 px-4 border-b">Overdue Days</th>
+                            <th class="py-2 px-4 border-b">Email</th>
                             <th class="py-2 px-4 border-b">Action</th>
                         </tr>
                     </thead>
@@ -50,22 +51,20 @@
                                 <tr class="border-b">
                                     <td class="py-2 px-4">{{ $index + 1 }}</td>
                                     <td class="py-2 px-4">{{ $loan->user->name }}</td>
-                                    <td class="py-2 px-4">{{ $loan->user->email }}</td>
+                                    <td class="py-2 px-4">{{ $loan->book->title }}</td>
                                     <td class="py-2 px-4">{{ now()->diffInDays($loan->due_date) }} days</td>
+                                    <td class="py-2 px-4">{{ $loan->user->email }}</td>
                                     <td class="py-2 px-4">
-                                        <a href="{{ route('send-reminder', $loan->user->id) }}"
-                                            class="text-blue-500 hover:underline">
-                                            Send Reminder
-                                        </a>
+                                        <!-- Action column can be left empty or used for future features -->
+                                        <span class="text-gray-500">-</span>
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5" class="py-2 px-4 text-center">No overdue loans found.</td>
+                                <td colspan="6" class="py-2 px-4 text-center">No overdue loans found.</td>
                             </tr>
                         @endif
-
                     </tbody>
                 </table>
             </div>

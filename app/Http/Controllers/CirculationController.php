@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Book;
 use App\Models\Loan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CirculationController extends Controller
@@ -12,11 +13,16 @@ class CirculationController extends Controller
     public function index()
     {
         // Get all loans with related user and book data
+        $this->checkOverdueLoans(); // Check and update overdue loans when accessing the circulation page
+
+        // Get all loans with related user and book data
         $loans = Loan::with('user', 'book')->where('status', 'Borrowed')->get(); // You can adjust the status if needed
 
         // Pass the data to the view
         return view('admin.circulation', compact('loans'));
     }
+
+
 
     // Step 1: Show all normal users
     public function showUsers()
@@ -56,20 +62,24 @@ class CirculationController extends Controller
 
     public function notifyOverdueMembers()
     {
-        // Get users who have overdue books
-        $overdueLoans = Loan::with('user')
-            ->where('status', 'Overdue')
-            ->where('due_date', '<', now())
+        // Ensure overdue loans are marked correctly
+        $this->checkOverdueLoans(); // This will update loans' status to 'Overdue' if necessary.
+
+        // Get overdue loans (status = 'Overdue')
+        $overdueLoans = Loan::with('user', 'book')
+            ->where('status', 'overdue') // Fetch only overdue loans
             ->get();
 
         if ($overdueLoans->isEmpty()) {
-            // Handle the case where no overdue loans exist
             return back()->with('error', 'No overdue loans found.');
         }
 
+        // Pass the overdue loans to the view
         return view('admin.notify', compact('overdueLoans'));
-
     }
+
+
+
 
     public function sendReminder(User $user)
     {
@@ -83,7 +93,8 @@ class CirculationController extends Controller
     {
         // Get all overdue loans
         $overdueLoans = Loan::where('status', 'overdue')
-            ->with('user') // Assuming you have a relationship between loan and user
+            ->with('user')
+            ->with('book')// Assuming you have a relationship between loan and user
             ->get();
 
         // Pass the overdue loans to the view
@@ -127,6 +138,44 @@ class CirculationController extends Controller
         // Redirect to circulation page with a success message
         return redirect()->route('admin.circulation')->with('success', 'Book issued successfully!');
     }
+
+    public function overdueMembers()
+{
+    // Ensure overdue loans are marked correctly
+    $this->checkOverdueLoans();
+
+    // Get overdue loans with status 'overdue' or due_date passed
+    $overdueLoans = Loan::where('status', 'overdue')
+        ->orWhere(function ($query) {
+            $query->where('due_date', '<', now())
+                  ->whereNull('returned_at'); // Ensure loan hasn't been returned
+        })
+        ->with('user', 'book')
+        ->get();
+
+    return view('admin.overdue-members', compact('overdueLoans'));
+}
+
+
+
+    public function checkOverdueLoans()
+    {
+        // Get all loans with a due_date that has passed and status not already 'Returned'
+        $overdueLoans = Loan::where('status', '!=', 'Returned') // Exclude returned books
+            ->where('due_date', '<', Carbon::now()) // Get loans where due_date is in the past
+            ->get();
+
+        foreach ($overdueLoans as $loan) {
+            if ($loan->status !== 'overdue') {
+                $loan->status = 'overdue';  // Ensure it's set to "Overdue"
+                $loan->save();
+            }
+        }
+
+        return back()->with('success', 'Overdue loans updated successfully!');
+    }
+
+
 
 
 
