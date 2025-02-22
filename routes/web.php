@@ -19,7 +19,7 @@ Route::get('/', function () {
     if (auth()->user()->role === 'admin') {
         return redirect()->route('admin.dashboard');
     }
-    return redirect()->route('user.dashboard');
+    return redirect()->route('user.layout', ['section' => 'dashboard']);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // Admin Dashboard Route
@@ -42,8 +42,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     })->name('admin.notify');
 
     Route::get('/admin-panel', function () {
-        return view('admin.panel');
-    })->name('admin.panel');
+        return view('admin.manage_users.panel');
+    })->name('admin.manage_users.panel');
 
     Route::get('/settings', function () {
         return view('admin.settings');
@@ -70,6 +70,18 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::put('/admin/loan/{loan}/return', [CirculationController::class, 'returnBook'])->name('return-book');
     Route::get('/admin/notify', [CirculationController::class, 'notifyOverdueMembers'])->name('notify-overdue-members');
     Route::get('/admin/notify/{user}/reminder', [CirculationController::class, 'sendReminder'])->name('send-reminder');
+    Route::get('/admin/manage-users', [AdminDashboardController::class, 'getUsers'])->name('admin.manage_users.index');
+    Route::get('/admin/manage-users/{id}/edit', [AdminDashboardController::class, 'editUser'])->name('admin.manage_users.edit');
+    Route::put('/admin/manage-users/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.manage_users.update');
+    Route::delete('/admin/manage-users/{id}', [AdminDashboardController::class, 'deleteUser'])->name('admin.manage_users.delete');
+    Route::get('/system-logs', [AdminDashboardController::class, 'showLogs'])
+        ->name('admin.system_logs');
+    // Display Settings Page
+    Route::get('/admin/settings', [AdminDashboardController::class, 'showSettings'])->name('admin.settings');
+
+    // Update Settings
+    Route::put('/admin/settings', [AdminDashboardController::class, 'updateSettings'])->name('admin.update_settings');
+
 
 
 
@@ -77,7 +89,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
 
 // User Dashboard Route
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
-    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/user/layout/{section?}', [UserDashboardController::class, 'index'])->name('user.layout');
+
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+
+
+    Route::get('/borrowed-books', [UserDashboardController::class, 'showBorrowedBooks'])->name('user.borrowed-books');
+    Route::get('/due-books', [UserDashboardController::class, 'showDueBooks'])->name('user.due-books');
+
 });
 
 // Authenticated Routes

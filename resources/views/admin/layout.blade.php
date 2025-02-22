@@ -30,8 +30,8 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="{{ route('admin.panel') }}"
-                        class="block p-2 hover:bg-gray-700 {{ request()->routeIs('admin.panel') ? 'bg-gray-700' : '' }}">
+                    <a href="{{ route('admin.manage_users.panel') }}"
+                        class="block p-2 hover:bg-gray-700 {{ request()->routeIs('admin.manage_users.panel') ? 'bg-gray-700' : '' }}">
                         Admin Panel
                     </a>
                 </li>

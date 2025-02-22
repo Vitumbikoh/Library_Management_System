@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\ActivityLog;
 use App\Models\User;
 use App\Models\Book;
 use App\Models\Loan;
@@ -20,6 +20,15 @@ class CirculationController extends Controller
 
         // Pass the data to the view
         return view('admin.circulation', compact('loans'));
+    }
+
+    protected function logActivity($action, $description = null)
+    {
+        ActivityLog::create([
+            'user' => auth()->user()->name,  // Assuming you have an authenticated user
+            'action' => $action,
+            'description' => $description,
+        ]);
     }
 
 
@@ -73,6 +82,9 @@ class CirculationController extends Controller
         if ($overdueLoans->isEmpty()) {
             return back()->with('error', 'No overdue loans found.');
         }
+
+        $this->logActivity('Overdue Loans Notified', 'Notified users about overdue books');
+
 
         // Pass the overdue loans to the view
         return view('admin.notify', compact('overdueLoans'));
@@ -135,26 +147,28 @@ class CirculationController extends Controller
         $loan->due_date = $request->due_date;
         $loan->save();
 
+        $this->logActivity('Book Issued', "Book '{$book->title}' issued to {$user->name}");
+
         // Redirect to circulation page with a success message
         return redirect()->route('admin.circulation')->with('success', 'Book issued successfully!');
     }
 
     public function overdueMembers()
-{
-    // Ensure overdue loans are marked correctly
-    $this->checkOverdueLoans();
+    {
+        // Ensure overdue loans are marked correctly
+        $this->checkOverdueLoans();
 
-    // Get overdue loans with status 'overdue' or due_date passed
-    $overdueLoans = Loan::where('status', 'overdue')
-        ->orWhere(function ($query) {
-            $query->where('due_date', '<', now())
-                  ->whereNull('returned_at'); // Ensure loan hasn't been returned
-        })
-        ->with('user', 'book')
-        ->get();
+        // Get overdue loans with status 'overdue' or due_date passed
+        $overdueLoans = Loan::where('status', 'overdue')
+            ->orWhere(function ($query) {
+                $query->where('due_date', '<', now())
+                    ->whereNull('returned_at'); // Ensure loan hasn't been returned
+            })
+            ->with('user', 'book')
+            ->get();
 
-    return view('admin.overdue-members', compact('overdueLoans'));
-}
+        return view('admin.overdue-members', compact('overdueLoans'));
+    }
 
 
 
