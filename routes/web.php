@@ -4,7 +4,6 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserDashboardController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CirculationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +25,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin/layout/{section?}', [AdminDashboardController::class, 'index'])->name('admin.layout');
 
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
 
     Route::get('/books/index', [BookController::class, 'index'])->name('admin.books.index');
@@ -64,12 +63,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/circulation/{user}/books/{book}/create-loan', [CirculationController::class, 'createLoanForm'])->name('create-loan-form');
     Route::post('/circulation/{user}/books/{book}/issue', [CirculationController::class, 'issueBook'])->name('issue-book.store');
     Route::get('/admin/circulation', [CirculationController::class, 'index'])->name('admin.circulation');
-    Route::get('/admin/circulation', [CirculationController::class, 'index'])->name('admin.circulation');
     Route::get('/admin/select-user-with-loans', [CirculationController::class, 'selectUserWithLoans'])->name('select-user-with-loans');
     Route::get('/admin/user/{user}/loaned-books', [CirculationController::class, 'viewLoanedBooks'])->name('view-loaned-books');
     Route::put('/admin/loan/{loan}/return', [CirculationController::class, 'returnBook'])->name('return-book');
-    Route::get('/admin/notify', [CirculationController::class, 'notifyOverdueMembers'])->name('notify-overdue-members');
-    Route::get('/admin/notify/{user}/reminder', [CirculationController::class, 'sendReminder'])->name('send-reminder');
+    Route::get('/notify', [CirculationController::class, 'overdueMembers'])->name('admin.notify');
+    Route::post('/admin/notify/{loan}', [CirculationController::class, 'prepareNotification'])->name('admin.prepareNotification');
+    Route::post('/admin/notify/{user}/reminder', [CirculationController::class, 'sendReminder'])->name('send-reminder');
     Route::get('/admin/manage-users', [AdminDashboardController::class, 'getUsers'])->name('admin.manage_users.index');
     Route::get('/admin/manage-users/{id}/edit', [AdminDashboardController::class, 'editUser'])->name('admin.manage_users.edit');
     Route::put('/admin/manage-users/{id}', [AdminDashboardController::class, 'updateUser'])->name('admin.manage_users.update');

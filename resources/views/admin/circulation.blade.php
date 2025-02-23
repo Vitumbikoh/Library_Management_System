@@ -2,35 +2,35 @@
 
 @section('content')
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 bg-white p-6 rounded-lg shadow-lg">
-        <h2 class="text-3xl font-semibold mb-4 text-gray-900">Manage Circulation</h2>
+        <h2 class="text-3xl font-semibold mb-4 text-gray-800">Manage Circulation</h2>
         <p class="text-lg text-gray-600 mb-8">View and manage book circulation, including borrowed and returned books.</p>
 
         <!-- Circulation Management Actions -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Issue a Book -->
             <div class="bg-gray-100 p-6 rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl">
-                <h3 class="text-xl font-semibold mb-4 text-gray-800">Issue a Book</h3>
+                <h3 class="text-xl font-semibold mb-4 text-teal-600">Issue a Book</h3>
                 <p class="text-gray-600 mb-4">Lend a book to a member, and track the circulation.</p>
                 <a href="{{ route('circulation.select-user') }}"
-                    class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                    class="inline-block bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition">
                     Issue Book
                 </a>
             </div>
 
             <!-- Return a Book -->
             <div class="bg-gray-100 p-6 rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl">
-                <h3 class="text-xl font-semibold mb-4 text-gray-800">Return a Book</h3>
+                <h3 class="text-xl font-semibold mb-4 text-yellow-600">Return a Book</h3>
                 <p class="text-gray-600 mb-4">Process book returns and update the system accordingly.</p>
-                <a href="{{ route('select-user-with-loans') }}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                <a href="{{ route('select-user-with-loans') }}" class="inline-block bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition">
                     Return Book
                 </a>
             </div>
 
             <!-- View Borrowing History -->
             <div class="bg-gray-100 p-6 rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl">
-                <h3 class="text-xl font-semibold mb-4 text-gray-800">Borrowing History</h3>
+                <h3 class="text-xl font-semibold mb-4 text-gray-700">Borrowing History</h3>
                 <p class="text-gray-600 mb-4">Track borrowing and return records for each member.</p>
-                <a href="" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+                <a href="" class="inline-block bg-gray-700 text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition">
                     View History
                 </a>
             </div>
