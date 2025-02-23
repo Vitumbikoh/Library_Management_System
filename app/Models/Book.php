@@ -22,14 +22,17 @@ class Book extends Model
         return $this->hasMany(Reservation::class);
     }
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+    // app/Models/Book.php
 
-    public function author()
-    {
-        return $this->belongsTo(Author::class);
-    }
+// public function category()
+// {
+//     return $this->belongsTo(Category::class, 'category_id');
+// }
+
+
+    // public function author()
+    // {
+    //     return $this->belongsTo(Author::class);
+    // }
 }
 

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Relationship with User
             $table->foreignId('book_id')->constrained()->onDelete('cascade'); // Relationship with Book
-            $table->date('loan_date');
-            $table->date('return_date');
-            $table->enum('status', ['pending', 'returned', 'overdue']);
+            $table->date('loan_date')->default(DB::raw('CURRENT_DATE')); // Set default value for loan_date
+            $table->date('due_date'); // Add the due_date column here
+            $table->enum('status', ['pending', 'returned', 'overdue', 'borrowed'])->default('pending');
             $table->timestamps();
         });
     }

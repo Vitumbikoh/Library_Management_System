@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\ActivityLog;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -29,6 +29,15 @@ class BookController extends Controller
         return view('admin.books.index', compact('books'));
     }
 
+    protected function logActivity($action, $description = null)
+    {
+        ActivityLog::create([
+            'user' => auth()->user()->name,  // Assuming you have an authenticated user
+            'action' => $action,
+            'description' => $description,
+        ]);
+    }
+
 
     /**
      * Show the form for creating a new book.
@@ -41,7 +50,7 @@ class BookController extends Controller
     /**
      * Store a newly created book in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Book $book)
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -52,8 +61,12 @@ class BookController extends Controller
             'quantity_available' => 'required|integer',
             'category' => 'required|string|max:255',
         ]);
+        
 
         Book::create($request->all());
+
+        $this->logActivity('Book Created', 'Created a new book: '  . $book->title);
+
 
         return redirect()->route('books.index')->with('message', 'Book created successfully');
     }
@@ -93,6 +106,8 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $book->delete();
+
+        $this->logActivity('Book Deleted', 'Deleted book: ' . $book->title);
 
         return redirect()->route('books.index')
             ->with('message', 'Book deleted successfully');

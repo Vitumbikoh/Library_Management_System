@@ -11,28 +11,29 @@
             <div class="bg-gray-100 p-4 rounded-lg shadow">
                 <h3 class="text-lg font-semibold mb-2">Manage Users</h3>
                 <p class="text-gray-600 mb-2">Add, edit, or remove users.</p>
-                <a href="" 
-                   class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <a href="{{ route('admin.manage_users.index') }}"
+                    class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     Go to Users
                 </a>
+
             </div>
 
             <!-- System Logs -->
             <div class="bg-gray-100 p-4 rounded-lg shadow">
                 <h3 class="text-lg font-semibold mb-2">View System Logs</h3>
                 <p class="text-gray-600 mb-2">Monitor system activities.</p>
-                <a href="" 
-                   class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <a href="{{ route('admin.system_logs') }}"
+                    class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     View Logs
                 </a>
+
             </div>
 
             <!-- Settings -->
             <div class="bg-gray-100 p-4 rounded-lg shadow">
                 <h3 class="text-lg font-semibold mb-2">Settings</h3>
                 <p class="text-gray-600 mb-2">Modify system configurations.</p>
-                <a href="" 
-                   class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <a href="" class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     Go to Settings
                 </a>
             </div>

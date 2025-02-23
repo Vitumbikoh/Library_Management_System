@@ -86,4 +86,6 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Book::class, 'reservations')->withPivot('reservation_date', 'status');
     }
+
+    
 }
