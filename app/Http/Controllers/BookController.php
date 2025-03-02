@@ -16,7 +16,7 @@ class BookController extends Controller
         $query = Book::query();
 
         // Apply search filter if any
-        if ($request->has('search') && $request->search) {
+        if ($request->filled('search')) {
             $search = $request->search;
             $query->where('title', 'like', '%' . $search . '%')
                 ->orWhere('author', 'like', '%' . $search . '%')
@@ -24,10 +24,11 @@ class BookController extends Controller
         }
 
         // Paginate the filtered results
-        $books = $query->paginate($request->get('show', 10)); // Default to 10 entries per page
+        $books = $query->paginate($request->get('show', 10))->appends($request->query());
 
         return view('admin.books.index', compact('books'));
     }
+
 
     protected function logActivity($action, $description = null)
     {
@@ -61,11 +62,11 @@ class BookController extends Controller
             'quantity_available' => 'required|integer',
             'category' => 'required|string|max:255',
         ]);
-        
+
 
         Book::create($request->all());
 
-        $this->logActivity('Book Created', 'Created a new book: '  . $book->title);
+        $this->logActivity('Book Created', 'Created a new book: ' . $book->title);
 
 
         return redirect()->route('books.index')->with('message', 'Book created successfully');

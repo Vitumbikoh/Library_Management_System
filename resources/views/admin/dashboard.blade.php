@@ -15,7 +15,7 @@
             <div class="bg-white p-6 rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
                 <h3 class="text-3xl font-semibold text-teal-600">{{ $borrowedBooks }}</h3>
                 <p class="mt-2 text-lg text-gray-600">Borrowed Books</p>
-                <a href="{{ route('circulation.select-user') }}" 
+                <a href="{{ route('select-user') }}" 
                     class="mt-4 inline-block bg-teal-600 text-white py-2 px-6 rounded-lg hover:bg-teal-700 transition duration-300">
                     Issue a Book
                 </a>

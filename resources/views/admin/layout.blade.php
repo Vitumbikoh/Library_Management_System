@@ -35,12 +35,7 @@
                         Admin Panel
                     </a>
                 </li>
-                <li class="mb-2">
-                    <a href="{{ route('admin.settings') }}"
-                        class="block p-2 hover:bg-gray-700 {{ request()->routeIs('admin.settings') ? 'bg-gray-700' : '' }}">
-                        Settings
-                    </a>
-                </li>
+
                 <li class="mb-2">
                     <a href="{{ route('admin.reports') }}"
                         class="block p-2 hover:bg-gray-700 {{ request()->routeIs('admin.reports') ? 'bg-gray-700' : '' }}">

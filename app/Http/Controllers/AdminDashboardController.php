@@ -89,10 +89,11 @@ class AdminDashboardController extends Controller
         $query = User::where('role', 'user');
 
         // Search functionality
-        if ($request->has('search') && $request->search != '') {
+        if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
-                    ->orWhere('email', 'like', '%' . $request->search . '%');
+                    ->orWhere('email', 'like', '%' . $request->search . '%')
+                    ->orWhere('phone_number', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -102,6 +103,7 @@ class AdminDashboardController extends Controller
 
         return view('admin.manage_users.index', compact('users'));
     }
+
     public function editUser($id)
     {
         $user = User::findOrFail($id);

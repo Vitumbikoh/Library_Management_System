@@ -11,7 +11,7 @@
             <div class="bg-gray-100 p-6 rounded-lg shadow-lg transition transform hover:scale-105 hover:shadow-xl">
                 <h3 class="text-xl font-semibold mb-4 text-teal-600">Issue a Book</h3>
                 <p class="text-gray-600 mb-4">Lend a book to a member, and track the circulation.</p>
-                <a href="{{ route('circulation.select-user') }}"
+                <a href="{{ route('select-user') }}"
                     class="inline-block bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 transition">
                     Issue Book
                 </a>
