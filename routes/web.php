@@ -26,7 +26,7 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::get('/admin/layout/{section?}', [AdminDashboardController::class, 'index'])->name('admin.layout');
 
-    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
 
     Route::get('/books/index', [BookController::class, 'index'])->name('admin.books.index');

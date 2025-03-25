@@ -24,13 +24,12 @@
             </div>
 
             <div>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
                     Send Notification
                 </button>
             </div>
         </form>
 
-        <!-- List of Overdue Members -->
         <!-- List of Overdue Members -->
         <div class="mt-6">
             <div class="overflow-x-auto">

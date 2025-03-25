@@ -20,19 +20,19 @@
                     Issue a Book
                 </a>
             </div>
-            <div class="bg-red-600 text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
+            <div class="bg-orange-600 text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
                 <h3 class="text-4xl font-semibold">{{ $returnedBooks }}</h3>
                 <p class="mt-2 text-xl">Returns</p>
                 <a href="{{ route('select-user-with-loans') }}"
-                    class="mt-4 inline-block bg-red-700 text-white py-2 px-6 rounded-full hover:bg-red-800 transition duration-300">
+                    class="mt-4 inline-block bg-orange-700 text-white py-2 px-6 rounded-full hover:bg-red-800 transition duration-300">
                     Return Books
                 </a>
             </div>
-            <div class="bg-orange-600 text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
+            <div class="bg-red-600 text-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
                 <h3 class="text-4xl font-semibold">{{ $overdueBooks }}</h3>
                 <p class="mt-2 text-xl">Overdue Books</p>
                 <a href="{{ route('admin.notify') }}"
-                    class="mt-4 inline-block bg-orange-700 text-white py-2 px-6 rounded-full hover:bg-orange-800 transition duration-300">
+                    class="mt-4 inline-block bg-red-700 text-white py-2 px-6 rounded-full hover:bg-orange-800 transition duration-300">
                     Follow Up
                 </a>
             </div>
